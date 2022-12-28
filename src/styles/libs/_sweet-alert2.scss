@@ -1,0 +1,9 @@
+.swal2-popup {
+  @extend .p-4, .pb-5, .shadow-lg;
+
+  border-radius: $modal-content-border-radius !important;
+
+  .swal2-html-container {
+    @extend .lh-base;
+  }
+}
