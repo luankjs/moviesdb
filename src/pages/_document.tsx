@@ -4,6 +4,7 @@ const Document = () =>  {
   return (
     <Html lang="en">
       <Head>
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
         <script src="https://kit.fontawesome.com/f0f1fd88a3.js" crossOrigin="anonymous"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
