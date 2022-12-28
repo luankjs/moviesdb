@@ -1,0 +1,17 @@
+body {
+  &,
+  & > #__next {
+    display: flex;
+    flex-direction: column;
+    height: 100% !important;
+    overflow-x: hidden;
+  }
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+}
