@@ -2,10 +2,13 @@ import type { AppProps } from 'next/app'
 
 import '../styles/main.scss'
 import 'animate.css';
+import { AuthProvider } from '../contexts/AuthContext';
 
 const App = ({ Component, pageProps }: AppProps) => {
   return(
-    <Component {...pageProps} />
+    <AuthProvider>
+      <Component {...pageProps} />
+    </AuthProvider>
   )
 }
 
