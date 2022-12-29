@@ -8,6 +8,7 @@ interface User {
 
 type AuthContextType = {
   currentUser: User | null
+  // eslint-disable-next-line no-unused-vars
   setLoginData: (user: User) => void
   signOut: () => void
 }
