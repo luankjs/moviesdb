@@ -27,5 +27,8 @@
     "sass": "^1.57.1",
     "sweetalert2": "^11.6.16",
     "typescript": "4.9.4"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^8.5.0"
   }
 }

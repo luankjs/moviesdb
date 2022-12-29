@@ -1,10 +1,10 @@
-import React, { PropsWithChildren }  from 'react'
+import React, { PropsWithChildren } from 'react'
+
 import Navbar from '../components/Navbar'
 
-interface Props {
-}
+interface Props {}
 
-const Layout: React.FC<PropsWithChildren<Props>> = ({children}) => {
+const Layout: React.FC<PropsWithChildren<Props>> = ({ children }) => {
   return (
     <div>
       <Navbar />

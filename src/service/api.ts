@@ -5,7 +5,7 @@ const tstapi = axios.create({
 })
 
 const omdbApi = axios.create({
-  baseURL: 'https://www.omdbapi.com'
+  baseURL: 'https://www.omdbapi.com',
 })
 
-export {tstapi, omdbApi}
+export { tstapi, omdbApi }

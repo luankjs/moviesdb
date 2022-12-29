@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from 'react'
 
 interface User {
   name: string
@@ -16,7 +16,11 @@ type AuthProviderType = {
   children?: React.ReactNode
 }
 
-const AuthContext = createContext<AuthContextType>({currentUser: null, setLoginData() {}, signOut() {}})
+const AuthContext = createContext<AuthContextType>({
+  currentUser: null,
+  setLoginData() {},
+  signOut() {},
+})
 
 const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
@@ -33,17 +37,17 @@ const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
 
   useEffect(() => {
     const storagedCurrentUser = localStorage.getItem('currentUser')
-    if (storagedCurrentUser) {  
+    if (storagedCurrentUser) {
       setCurrentUser(JSON.parse(storagedCurrentUser))
     }
   }, [])
-  
+
   return (
     <AuthContext.Provider
       value={{
         currentUser,
         setLoginData,
-        signOut
+        signOut,
       }}
     >
       {children}

@@ -43,4 +43,4 @@ const sweetAlertDefaultParams = {
   // showLoaderOnConfirm: false
 }
 
-export {sweetAlertDefaultParams}
+export { sweetAlertDefaultParams }
