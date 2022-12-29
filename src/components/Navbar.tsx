@@ -23,7 +23,7 @@ const Navbar: React.FC<PropsWithChildren<Props>> = () => {
         <div className='d-flex justify-content-end' style={{flex: 1}}>
           {currentUser ? (
             <>
-              <span className='fw-bold fs-6'>Olá, {currentUser.name}!</span>
+              <span className='fw-bold fs-6 d-none d-sm-block'>Olá, {currentUser.name}!</span>
               <button type='button' className='btn btn-link p-0 ms-3' onClick={signOut}>Sair</button>
             </>
           ) : (
