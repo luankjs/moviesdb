@@ -276,16 +276,14 @@ const MoviePage = () => {
                             </div>
                           )
                         ) : (
-                          <div className="col-sm-6 col-md-4 col-lg-3 mb-3">
-                            <Link href="/entrar">
-                              <div className="d-flex align-items-center justify-content-center rounded-3 p-3 border border-cyan-700 border-2 h-100 cursor-pointer">
-                                <i className="far fa-plus me-3 text-cyan-600"></i>
-                                <span className="text-cyan-600">
-                                  Faça login para escrever sua avaliação
-                                </span>
-                              </div>
-                            </Link>
-                          </div>
+                          <Link href="/entrar">
+                            <div className="d-flex align-items-center justify-content-center rounded-3 p-3 border border-cyan-700 border-2 h-100 cursor-pointer">
+                              <i className="far fa-plus me-3 text-cyan-600"></i>
+                              <span className="text-cyan-600">
+                                Faça login para escrever sua avaliação
+                              </span>
+                            </div>
+                          </Link>
                         )}
                       </div>
                     ) : (
