@@ -9,48 +9,11 @@ import ReactLoading from 'react-loading'
 import Swal from 'sweetalert2'
 
 import Layout from '../../domain/Layout'
-import { MovieProps } from '../../domain/Movie'
+import { MovieProps } from '../../domain/Movie/Card'
+import MovieInfo from '../../domain/Movie/Info'
+import MovieMember from '../../domain/Movie/Member'
 import { omdbApi } from '../../service/api'
 import { sweetAlertDefaultParams } from '../../utils/sweetAlert2'
-
-const MovieInfo = ({
-  title,
-  text,
-  icon,
-  className,
-}: {
-  title: string
-  text?: string
-  icon: string
-  className?: string
-}) => {
-  return (
-    <div className={`d-flex align-items-center ${className}`}>
-      <i className={`far fa-${icon} text-secondary me-3 fs-5`}></i>
-      <div className="d-flex flex-column">
-        <span className="fw-semibold fs-8">{title}</span>
-        <span className="text-gray-300 fs-8">{text}</span>
-      </div>
-    </div>
-  )
-}
-
-const MovieMember = ({
-  name,
-  role,
-  className,
-}: {
-  name: string
-  role: string
-  className: string
-}) => {
-  return (
-    <div className={`d-flex flex-column ${className}`}>
-      <span className="fw-semibold fs-8">{name}</span>
-      <span className="text-gray-300 fs-8">{role}</span>
-    </div>
-  )
-}
 
 const MoviePage = () => {
   const router = useRouter()

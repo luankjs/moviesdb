@@ -7,7 +7,7 @@ import ReactLoading from 'react-loading'
 import Swal from 'sweetalert2'
 
 import Layout from '../domain/Layout'
-import Movie, { MovieProps } from '../domain/Movie'
+import MovieCard, { MovieProps } from '../domain/Movie/Card'
 import { omdbApi } from '../service/api'
 import { sweetAlertDefaultParams } from '../utils/sweetAlert2'
 
@@ -150,7 +150,7 @@ const HomePage = () => {
                 key={movie.imdbID}
                 className="col-6 col-md-4 col-lg-3 col-xl-2 mb-4"
               >
-                <Movie {...movie} />
+                <MovieCard {...movie} />
               </div>
             ))}
           </InfiniteScroll>
