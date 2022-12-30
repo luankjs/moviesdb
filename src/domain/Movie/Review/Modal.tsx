@@ -8,14 +8,11 @@ import Swal from 'sweetalert2'
 import { tstapi } from '../../../service/api'
 import { sweetAlertDefaultParams } from '../../../utils/sweetAlert2'
 
-import { MovieReviewProps } from './Card'
-
 interface ReviewModalProps {
   show: boolean
-  review?: MovieReviewProps
   movieImdbId: string
   // eslint-disable-next-line no-unused-vars
-  onHide: (review?: MovieReviewProps) => void
+  onHide: (record?: any) => void
 }
 
 type ReviewFormData = {
@@ -23,12 +20,7 @@ type ReviewFormData = {
   stars: number
 }
 
-const MovieReviewModal = ({
-  show,
-  movieImdbId,
-  review,
-  onHide,
-}: ReviewModalProps) => {
+const MovieReviewModal = ({ show, movieImdbId, onHide }: ReviewModalProps) => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const {
     control,
@@ -36,7 +28,7 @@ const MovieReviewModal = ({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ReviewFormData>({ defaultValues: review })
+  } = useForm<ReviewFormData>()
 
   const onSubmit = (data: ReviewFormData) => {
     setIsSubmitting(true)
@@ -50,7 +42,7 @@ const MovieReviewModal = ({
           title: 'Tudo certo!',
           text: response.data.msg,
         }).then((result) => {
-          if (result.isConfirmed) handleHide()
+          if (result.isConfirmed) handleHide(response.data)
         })
       })
       .catch((error) => {
@@ -64,9 +56,9 @@ const MovieReviewModal = ({
       .finally(() => setIsSubmitting(false))
   }
 
-  const handleHide = () => {
+  const handleHide = (record?: any) => {
     reset({ comment: '', stars: 0 })
-    onHide()
+    onHide(record)
   }
 
   return (

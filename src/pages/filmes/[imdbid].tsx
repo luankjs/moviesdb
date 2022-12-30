@@ -206,7 +206,7 @@ const MoviePage = () => {
               <div className="container">
                 <div className="row justify-content-center">
                   <div className="col-10">
-                    {isLoadingReviews ? (
+                    {isLoadingReviews && !movieReviews ? (
                       <div className="w-100 d-flex align-items-center justify-content-center">
                         <ReactLoading
                           type="spinningBubbles"
@@ -225,7 +225,10 @@ const MoviePage = () => {
                             key={i}
                             className="col-sm-6 col-md-4 col-lg-3 mb-3"
                           >
-                            <MovieReview {...movieReview} />
+                            <MovieReview
+                              {...movieReview}
+                              handleRefetchReviews={getMovieReviews}
+                            />
                           </div>
                         ))}
                       </div>
@@ -259,7 +262,10 @@ const MoviePage = () => {
         <MovieReviewModal
           show={showReviewModal}
           movieImdbId={movie?.imdbID}
-          onHide={() => setShowReviewModal(false)}
+          onHide={(record) => {
+            if (record) getMovieReviews()
+            setShowReviewModal(false)
+          }}
         />
       )}
     </Layout>
