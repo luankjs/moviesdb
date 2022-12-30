@@ -1,7 +1,11 @@
 import React, { PropsWithChildren } from 'react'
 
+import _ from 'lodash'
 import Image from 'next/image'
 import Link from 'next/link'
+
+import { useAuthContext } from '../../contexts/AuthContext'
+import { tstapi } from '../../service/api'
 
 interface MovieProps {
   Title: string
@@ -36,6 +40,22 @@ const MovieCard: React.FC<PropsWithChildren<MovieProps>> = ({
   Year,
   imdbID,
 }) => {
+  const { currentUserFavoritesMovies, getMyFavoritesMovies } = useAuthContext()
+
+  const isFavoriteMovie = _.find(currentUserFavoritesMovies, { imdbID })
+
+  const toggleFavoriteMovie = () => {
+    tstapi({
+      method: `${isFavoriteMovie ? 'delete' : 'post'}`,
+      url: `/favorites/${isFavoriteMovie ? imdbID : ''}`,
+      data: !isFavoriteMovie && { imdbID },
+    })
+      .then(() => {
+        getMyFavoritesMovies()
+      })
+      .catch((error) => console.log(error.response))
+  }
+
   return (
     <div className="movie">
       <div className="movie-poster ratio ratio-2x3 position-relative rounded-3 overflow-hidden shadow">
@@ -46,6 +66,17 @@ const MovieCard: React.FC<PropsWithChildren<MovieProps>> = ({
           style={{ objectFit: 'cover' }}
         />
         <div className="movie-poster-overlay d-flex align-items-center justify-content-center">
+          <div
+            className="d-flex align-items-center justify-content-center position-absolute top-0 end-0 p-2 m-2 rounded-4 bg-primary bg-opacity-20 cursor-pointer"
+            title={isFavoriteMovie ? 'Favorito' : 'Favoritar'}
+            onClick={toggleFavoriteMovie}
+          >
+            <i
+              className={`${
+                isFavoriteMovie ? 'fas' : 'far'
+              } fa-heart text-primary lh-1`}
+            ></i>
+          </div>
           <Link
             href={`/filmes/${imdbID}`}
             target="_blank"

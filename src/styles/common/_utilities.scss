@@ -20,6 +20,20 @@ $utilities: map-merge(
             ),
         )
       ),
+    'bg-opacity':
+      map-merge(
+        map-get($utilities, 'bg-opacity'),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, 'bg-opacity'), 'values'),
+              (
+                20: 0.2,
+                40: 0.4,
+              )
+            ),
+        )
+      ),
     'width':
       map-merge(
         map-get($utilities, 'width'),
