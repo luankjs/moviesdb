@@ -51,7 +51,7 @@ const Navbar: React.FC<PropsWithChildren<Props>> = () => {
                   Entre
                 </button>
               </Link>
-              <Link href="/crie-sua-conta">
+              <Link href="/crie-sua-conta" className="d-none d-sm-block">
                 <button type="button" className="btn btn-link btn-sm">
                   Cadastre-se
                 </button>
