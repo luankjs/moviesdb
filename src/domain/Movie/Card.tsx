@@ -40,7 +40,8 @@ const MovieCard: React.FC<PropsWithChildren<MovieProps>> = ({
   Year,
   imdbID,
 }) => {
-  const { currentUserFavoritesMovies, getMyFavoritesMovies } = useAuthContext()
+  const { currentUser, currentUserFavoritesMovies, getMyFavoritesMovies } =
+    useAuthContext()
 
   const isFavoriteMovie = _.find(currentUserFavoritesMovies, { imdbID })
 
@@ -66,17 +67,19 @@ const MovieCard: React.FC<PropsWithChildren<MovieProps>> = ({
           style={{ objectFit: 'cover' }}
         />
         <div className="movie-poster-overlay d-flex align-items-center justify-content-center">
-          <div
-            className="d-flex align-items-center justify-content-center position-absolute top-0 end-0 p-2 m-2 rounded-4 bg-primary bg-opacity-20 cursor-pointer"
-            title={isFavoriteMovie ? 'Favorito' : 'Favoritar'}
-            onClick={toggleFavoriteMovie}
-          >
-            <i
-              className={`${
-                isFavoriteMovie ? 'fas' : 'far'
-              } fa-heart text-primary lh-1`}
-            ></i>
-          </div>
+          {currentUser && (
+            <div
+              className="d-flex align-items-center justify-content-center position-absolute top-0 end-0 p-2 m-2 rounded-4 bg-primary bg-opacity-20 cursor-pointer"
+              title={isFavoriteMovie ? 'Favorito' : 'Favoritar'}
+              onClick={toggleFavoriteMovie}
+            >
+              <i
+                className={`${
+                  isFavoriteMovie ? 'fas' : 'far'
+                } fa-heart text-primary lh-1`}
+              ></i>
+            </div>
+          )}
           <Link
             href={`/filmes/${imdbID}`}
             target="_blank"
