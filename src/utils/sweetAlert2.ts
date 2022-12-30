@@ -12,7 +12,7 @@ const sweetAlertDefaultParams = {
     // inputLabel: '...',
     // validationMessage: '...',
     // actions: '...',
-    confirmButton: 'btn btn-primary',
+    confirmButton: 'btn btn-primary btn-lg',
     // denyButton: '...',
     // cancelButton: '...',
     // loader: '...',
