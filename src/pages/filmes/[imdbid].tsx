@@ -12,7 +12,8 @@ import Layout from '../../domain/Layout'
 import { MovieProps } from '../../domain/Movie/Card'
 import MovieInfo from '../../domain/Movie/Info'
 import MovieMember from '../../domain/Movie/Member'
-import { omdbApi } from '../../service/api'
+import MovieReview, { MovieReviewProps } from '../../domain/Movie/Review'
+import { omdbApi, tstapi } from '../../service/api'
 import { sweetAlertDefaultParams } from '../../utils/sweetAlert2'
 
 const MoviePage = () => {
@@ -20,30 +21,51 @@ const MoviePage = () => {
   const { imdbid } = router.query
 
   const [isLoading, setIsLoading] = useState(false)
+  const [isLoadingReviews, setIsLoadingReviews] = useState(false)
   const [movie, setMovie] = useState<MovieProps | null>(null)
+  const [movieReviews, setMovieReviews] =
+    useState<Array<MovieReviewProps> | null>(null)
+
+  const getMovieDetails = () => {
+    omdbApi
+      .get('/', {
+        params: {
+          i: imdbid,
+          apiKey: process.env.NEXT_PUBLIC_OMBD_API_KEY,
+        },
+      })
+      .then((response) => {
+        setMovie(response.data)
+        setIsLoadingReviews(true)
+        getMovieReviews()
+      })
+      .catch(() => {
+        Swal.fire({
+          ...sweetAlertDefaultParams,
+          icon: 'error',
+          title: 'Ops, houve um problema...',
+          text: 'Tente novamente em instantes',
+        })
+      })
+      .finally(() => setIsLoading(false))
+  }
+
+  const getMovieReviews = () => {
+    tstapi
+      .get(`/reviews/${imdbid}`)
+      .then((response) => {
+        setMovieReviews(response.data.reviews)
+      })
+      .catch((error) => {
+        console.log(error.response)
+      })
+      .finally(() => setIsLoadingReviews(false))
+  }
 
   useEffect(() => {
     if (imdbid) {
       setIsLoading(true)
-      omdbApi
-        .get('/', {
-          params: {
-            i: imdbid,
-            apiKey: process.env.NEXT_PUBLIC_OMBD_API_KEY,
-          },
-        })
-        .then((response) => {
-          setMovie(response.data)
-        })
-        .catch(() => {
-          Swal.fire({
-            ...sweetAlertDefaultParams,
-            icon: 'error',
-            title: 'Ops, houve um problema...',
-            text: 'Tente novamente em instantes',
-          })
-        })
-        .finally(() => setIsLoading(false))
+      getMovieDetails()
     }
   }, [imdbid])
 
@@ -60,106 +82,168 @@ const MoviePage = () => {
             width={64}
             className="me-4"
           />
-          <span className="fs-5">Carregando dados do filmes...</span>
+          <span className="fs-5">Carregando dados do filme...</span>
         </div>
       ) : (
-        <div className="container">
-          <div className="row justify-content-center align-items-center mt-5">
-            <div className="col-md-4 col-lg-3 mb-5 mb-md-0">
-              <div className="ratio ratio-2x3 position-relative rounded-3 overflow-hidden shadow-lg">
-                <Image
-                  src={
-                    movie?.Poster != 'N/A'
-                      ? movie?.Poster
-                      : '/movie-poster-placeholder.jpg'
-                  }
-                  alt={movie?.Title ?? 'Movie Title'}
-                  fill
-                  style={{ objectFit: 'cover' }}
-                />
+        <>
+          <div className="container">
+            <div className="row justify-content-center align-items-center my-5">
+              <div className="col-md-4 col-lg-3 mb-5 mb-md-0">
+                <div className="ratio ratio-2x3 position-relative rounded-3 overflow-hidden shadow-lg">
+                  <Image
+                    src={
+                      movie && movie.Poster != 'N/A'
+                        ? movie?.Poster
+                        : '/movie-poster-placeholder.jpg'
+                    }
+                    alt={movie?.Title ?? 'Movie Title'}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                  />
+                </div>
               </div>
-            </div>
-            <div className="col-md-8 col-lg-7">
-              <div className="px-md-2 px-xl-4">
-                <h1 className="fw-semibold">{movie?.Title}</h1>
-                <p className="text-gray-600">{movie?.Plot}</p>
-                <div className="my-4">
-                  <button className="btn btn-primary">
-                    <i className="far fa-heart me-2"></i>
-                    <span>Favoritar</span>
-                  </button>
-                  <Link
-                    href={`https://www.imdb.com/title/${movie?.imdbID}`}
-                    className="btn btn-outline-primary ms-3"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Ver no IMDb
-                  </Link>
-                </div>
-                <div className="d-flex flex-column flex-sm-row align-items-sm-center w-100 my-4">
-                  <MovieInfo
-                    title="Lançamento"
-                    text={movie?.Released}
-                    icon="calendar"
-                    className="flex-fill mb-3 mb-sm-0"
-                  />
-                  <div className="d-none d-sm-inline-block vr mx-4"></div>
-                  <MovieInfo
-                    title="Tempo de duração"
-                    text={movie?.Runtime}
-                    icon="clock"
-                    className="flex-fill mb-3 mb-sm-0"
-                  />
-                  <div className="d-none d-sm-inline-block vr mx-4"></div>
-                  <MovieInfo
-                    title="Orçamento"
-                    text={movie?.BoxOffice}
-                    icon="dollar-sign"
-                    className="flex-fill mb-3 mb-sm-0"
-                  />
-                </div>
-                <div className="mt-4">
-                  <h2 className="fs-6 text-secondary mb-2">Equipe Técnica</h2>
-                  <div className="d-flex flex-column flex-sm-row flex-wrap align-items-sm-center w-100">
-                    {movie?.Director &&
-                      _.split(movie?.Director, ', ').map((director: string) => (
-                        <MovieMember
-                          key={director}
-                          name={director}
-                          role="Diretor"
-                          className="me-5 mb-3"
-                        />
-                      ))}
-                    {movie?.Writer &&
-                      _.split(movie?.Writer, ', ').map((writer: string) => (
-                        <MovieMember
-                          key={writer}
-                          name={writer}
-                          role="Roteirista"
-                          className="me-5 mb-3"
-                        />
-                      ))}
+              <div className="col-md-8 col-lg-7">
+                <div className="px-md-2 px-xl-4">
+                  <h1 className="fw-semibold">{movie?.Title}</h1>
+                  <p className="text-gray-600">{movie?.Plot}</p>
+                  <div className="my-4">
+                    <button className="btn btn-primary">
+                      <i className="far fa-heart me-2"></i>
+                      <span>Favoritar</span>
+                    </button>
+                    <Link
+                      href={`https://www.imdb.com/title/${movie?.imdbID}`}
+                      className="btn btn-outline-primary ms-3"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Ver no IMDb
+                    </Link>
                   </div>
-                </div>
-                <div className="mt-2">
-                  <h2 className="fs-6 text-secondary mb-2">Elenco Principal</h2>
-                  <div className="d-flex flex-column flex-sm-row flex-wrap align-items-sm-center w-100">
-                    {movie?.Actors &&
-                      _.split(movie?.Actors, ', ').map((actor: string) => (
-                        <MovieMember
-                          key={actor}
-                          name={actor}
-                          role="Ator"
-                          className="me-5 mb-3"
-                        />
-                      ))}
+                  <div className="d-flex flex-column flex-sm-row align-items-sm-center w-100 my-4">
+                    <MovieInfo
+                      title="Lançamento"
+                      text={movie?.Released}
+                      icon="calendar"
+                      className="flex-fill mb-3 mb-sm-0"
+                    />
+                    <div className="d-none d-sm-inline-block vr mx-4"></div>
+                    <MovieInfo
+                      title="Tempo de duração"
+                      text={movie?.Runtime}
+                      icon="clock"
+                      className="flex-fill mb-3 mb-sm-0"
+                    />
+                    <div className="d-none d-sm-inline-block vr mx-4"></div>
+                    <MovieInfo
+                      title="Orçamento"
+                      text={movie?.BoxOffice}
+                      icon="dollar-sign"
+                      className="flex-fill mb-3 mb-sm-0"
+                    />
+                  </div>
+                  <div className="mt-4">
+                    <h2 className="fs-6 text-secondary mb-2">Equipe Técnica</h2>
+                    <div className="d-flex flex-column flex-sm-row flex-wrap align-items-sm-center w-100">
+                      {movie?.Director &&
+                        movie?.Director != 'N/A' &&
+                        _.split(movie?.Director, ', ').map(
+                          (director: string) => (
+                            <MovieMember
+                              key={director}
+                              name={director}
+                              role="Diretor"
+                              className="me-5 mb-3"
+                            />
+                          )
+                        )}
+                      {movie?.Writer &&
+                        movie?.Writer != 'N/A' &&
+                        _.split(movie?.Writer, ', ').map((writer: string) => (
+                          <MovieMember
+                            key={writer}
+                            name={writer}
+                            role="Roteirista"
+                            className="me-5 mb-3"
+                          />
+                        ))}
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <h2 className="fs-6 text-secondary mb-2">
+                      Elenco Principal
+                    </h2>
+                    <div className="d-flex flex-column flex-sm-row flex-wrap align-items-sm-center w-100">
+                      {movie?.Actors &&
+                        movie?.Actors != 'N/A' &&
+                        _.split(movie?.Actors, ', ').map((actor: string) => (
+                          <MovieMember
+                            key={actor}
+                            name={actor}
+                            role="Ator"
+                            className="me-5 mb-3"
+                          />
+                        ))}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+          <div className="my-5">
+            <div className="container">
+              <div className="row justify-content-center">
+                <div className="col-10">
+                  <h2 className="fs-3 mb-3">Avalições</h2>
+                </div>
+              </div>
+            </div>
+            <div className="bg-cyan-800 pt-5 p-md-5">
+              <div className="container">
+                <div className="row justify-content-center">
+                  <div className="col-10">
+                    {isLoadingReviews ? (
+                      <div className="w-100 d-flex align-items-center justify-content-center">
+                        <ReactLoading
+                          type="spinningBubbles"
+                          height={48}
+                          width={48}
+                          className="me-4"
+                        />
+                        <span className="fs-6">
+                          Carregando avaliações do filme...
+                        </span>
+                      </div>
+                    ) : movieReviews && movieReviews.length > 0 ? (
+                      <div className="row">
+                        {movieReviews?.map((movieReview, i) => (
+                          <div
+                            key={i}
+                            className="col-sm-6 col-md-4 col-lg-3 mb-3"
+                          >
+                            <MovieReview {...movieReview} />
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <>
+                        <span className="fs-5 text-gray-400">
+                          Esse filme não tem avalições ainda.
+                        </span>
+                        <button
+                          className="btn btn-link"
+                          onClick={() => console.log('openModal')}
+                        >
+                          Escreve a primeira avalição
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </Layout>
   )
