@@ -25,6 +25,7 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.41.2",
     "react-infinite-scroll-component": "^6.1.0",
+    "react-lines-ellipsis": "^0.15.3",
     "react-loading": "^2.0.3",
     "react-rating": "^2.0.5",
     "sass": "^1.57.1",
