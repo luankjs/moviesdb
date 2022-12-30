@@ -21,10 +21,16 @@ import { sweetAlertDefaultParams } from '../../utils/sweetAlert2'
 const MoviePage = () => {
   const router = useRouter()
   const { imdbid } = router.query
-  const { currentUser, currentUserReviews } = useAuthContext()
+  const {
+    currentUser,
+    currentUserReviews,
+    currentUserFavoritesMovies,
+    getMyFavoritesMovies,
+  } = useAuthContext()
 
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingReviews, setIsLoadingReviews] = useState(false)
+  const [isFavoritingMovie, setIsFavoritingMovie] = useState(false)
   const [showReviewModal, setShowReviewModal] = useState(false)
   const [movie, setMovie] = useState<MovieProps | null>(null)
   const [movieReviews, setMovieReviews] =
@@ -65,6 +71,29 @@ const MoviePage = () => {
       })
       .finally(() => setIsLoadingReviews(false))
   }
+
+  const toggleFavoriteMovie = () => {
+    setIsFavoritingMovie(true)
+
+    tstapi({
+      method: `${isFavoriteMovie ? 'delete' : 'post'}`,
+      url: `/favorites/${isFavoriteMovie ? imdbid : ''}`,
+      data: !isFavoriteMovie && { imdbID: imdbid },
+    })
+      .then((response) => {
+        getMyFavoritesMovies()
+        Swal.fire({
+          ...sweetAlertDefaultParams,
+          icon: 'success',
+          title: 'Tudo certo!',
+          text: response.data.msg,
+        })
+      })
+      .catch((error) => console.log(error.response))
+      .finally(() => setIsFavoritingMovie(false))
+  }
+
+  const isFavoriteMovie = _.find(currentUserFavoritesMovies, { imdbID: imdbid })
 
   useEffect(() => {
     if (imdbid) {
@@ -111,9 +140,21 @@ const MoviePage = () => {
                   <h1 className="fw-semibold">{movie?.Title}</h1>
                   <p className="text-gray-600">{movie?.Plot}</p>
                   <div className="my-4">
-                    <button className="btn btn-primary">
-                      <i className="far fa-heart me-2"></i>
-                      <span>Favoritar</span>
+                    <button
+                      className="btn btn-primary"
+                      onClick={toggleFavoriteMovie}
+                      disabled={isFavoritingMovie}
+                    >
+                      <i
+                        className={`${
+                          isFavoriteMovie ? 'fas' : 'far'
+                        } fa-heart me-2`}
+                      ></i>
+                      <span>
+                        {isFavoritingMovie
+                          ? `${isFavoriteMovie ? 'Desf' : 'F'}avoritando...`
+                          : `${isFavoriteMovie ? 'Desf' : 'F'}avoritar`}
+                      </span>
                     </button>
                     <Link
                       href={`https://www.imdb.com/title/${movie?.imdbID}`}
@@ -197,7 +238,7 @@ const MoviePage = () => {
           <div className="my-5">
             <div className="container">
               <div className="row justify-content-center">
-                <div className="col-11 col-md-10">
+                <div className="col-11">
                   <h2 className="fs-3 mb-3">Avalições</h2>
                 </div>
               </div>
@@ -205,7 +246,7 @@ const MoviePage = () => {
             <div className="bg-cyan-800 pt-5 pb-4 p-md-5">
               <div className="container">
                 <div className="row justify-content-center">
-                  <div className="col-11 col-md-10">
+                  <div className="col-11">
                     {isLoadingReviews && !movieReviews ? (
                       <div className="w-100 d-flex align-items-center justify-content-center">
                         <ReactLoading
