@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react'
 
+import _ from 'lodash'
 import Link from 'next/link'
 
 import { useAuthContext } from '../contexts/AuthContext'
@@ -27,7 +28,7 @@ const Navbar: React.FC<PropsWithChildren<Props>> = () => {
           {currentUser ? (
             <>
               <span className="fw-bold fs-6 d-none d-sm-block">
-                Olá, {currentUser.name}!
+                Olá, {_.split(currentUser.name, ' ')[0]}!
               </span>
               <button
                 type="button"
