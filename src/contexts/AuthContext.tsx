@@ -1,5 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 
+import { MovieReviewProps } from '../domain/Movie/Review/Card'
+import { tstapi } from '../service/api'
+
 interface User {
   name: string
   email: string
@@ -8,9 +11,11 @@ interface User {
 
 type AuthContextType = {
   currentUser: User | null
+  currentUserReviews: Array<MovieReviewProps>
   // eslint-disable-next-line no-unused-vars
   setLoginData: (user: User) => void
   signOut: () => void
+  getMyReviews: () => void
 }
 
 type AuthProviderType = {
@@ -19,12 +24,17 @@ type AuthProviderType = {
 
 const AuthContext = createContext<AuthContextType>({
   currentUser: null,
+  currentUserReviews: [],
   setLoginData() {},
   signOut() {},
+  getMyReviews() {},
 })
 
 const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [currentUserReviews, setCurrentUserReviews] = useState<
+    Array<MovieReviewProps>
+  >([])
 
   const setLoginData = (user: User) => {
     localStorage.setItem('currentUser', JSON.stringify(user))
@@ -36,9 +46,16 @@ const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
     setCurrentUser(null)
   }
 
+  const getMyReviews = () =>
+    tstapi
+      .get('/reviews/my')
+      .then((response) => setCurrentUserReviews(response.data.reviews))
+      .catch((error) => console.log(error.response.msg))
+
   useEffect(() => {
     const storagedCurrentUser = localStorage.getItem('currentUser')
     if (storagedCurrentUser) {
+      getMyReviews()
       setCurrentUser(JSON.parse(storagedCurrentUser))
     }
   }, [])
@@ -49,6 +66,8 @@ const AuthProvider: React.FC<AuthProviderType> = ({ children }) => {
         currentUser,
         setLoginData,
         signOut,
+        currentUserReviews,
+        getMyReviews,
       }}
     >
       {children}

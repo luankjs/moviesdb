@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form'
 import Rating from 'react-rating'
 import Swal from 'sweetalert2'
 
+import { useAuthContext } from '../../../contexts/AuthContext'
 import { tstapi } from '../../../service/api'
 import { sweetAlertDefaultParams } from '../../../utils/sweetAlert2'
 
@@ -30,6 +31,8 @@ const MovieReviewModal = ({ show, movieImdbId, onHide }: ReviewModalProps) => {
     formState: { errors },
   } = useForm<ReviewFormData>()
 
+  const { getMyReviews } = useAuthContext()
+
   const onSubmit = (data: ReviewFormData) => {
     setIsSubmitting(true)
 
@@ -42,6 +45,7 @@ const MovieReviewModal = ({ show, movieImdbId, onHide }: ReviewModalProps) => {
           title: 'Tudo certo!',
           text: response.data.msg,
         }).then((result) => {
+          getMyReviews()
           if (result.isConfirmed) handleHide(response.data)
         })
       })

@@ -1,31 +1,45 @@
-@import "bootstrap/scss/functions";
-@import "bootstrap/scss/variables";
-@import "bootstrap/scss/maps";
-@import "bootstrap/scss/mixins";
-@import "bootstrap/scss/utilities";
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/utilities';
 
 $utilities: map-merge(
   $utilities,
   (
-    "max-width": map-merge(
-      map-get($utilities, "max-width"),
-      (
-        values: map-merge(
-          map-get(map-get($utilities, "max-width"), "values"),
-          ('400px': 400px),
-        ),
+    'max-width':
+      map-merge(
+        map-get($utilities, 'max-width'),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, 'max-width'), 'values'),
+              (
+                '400px': 400px,
+              )
+            ),
+        )
       ),
-    ),
-    "width": map-merge(
-      map-get($utilities, "width"),
-      (
-        values: map-merge(
-          map-get(map-get($utilities, "width"), "values"),
-          (90: 90%),
-        ),
+    'width':
+      map-merge(
+        map-get($utilities, 'width'),
+        (
+          values:
+            map-merge(
+              map-get(map-get($utilities, 'width'), 'values'),
+              (
+                90: 90%,
+              )
+            ),
+        )
       ),
+    'cursor': (
+      property: cursor,
+      class: cursor,
+      responsive: true,
+      values: auto pointer grab,
     ),
   )
 );
 
-@import "bootstrap/scss/utilities/api";
+@import 'bootstrap/scss/utilities/api';

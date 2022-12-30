@@ -21,7 +21,7 @@ import { sweetAlertDefaultParams } from '../../utils/sweetAlert2'
 const MoviePage = () => {
   const router = useRouter()
   const { imdbid } = router.query
-  const { currentUser } = useAuthContext()
+  const { currentUser, currentUserReviews } = useAuthContext()
 
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingReviews, setIsLoadingReviews] = useState(false)
@@ -231,6 +231,35 @@ const MoviePage = () => {
                             />
                           </div>
                         ))}
+                        {currentUser ? (
+                          !_.find(currentUserReviews, {
+                            user: { name: currentUser.name },
+                            imdbID: imdbid,
+                          }) && (
+                            <div className="col-sm-6 col-md-4 col-lg-3 mb-3">
+                              <div
+                                className="d-flex align-items-center justify-content-center rounded-3 p-3 border border-cyan-700 border-2 h-100 cursor-pointer"
+                                onClick={() => setShowReviewModal(true)}
+                              >
+                                <i className="far fa-plus me-3 text-cyan-600"></i>
+                                <span className="text-cyan-600">
+                                  Escreva sua avaliação
+                                </span>
+                              </div>
+                            </div>
+                          )
+                        ) : (
+                          <div className="col-sm-6 col-md-4 col-lg-3 mb-3">
+                            <Link href="/entrar">
+                              <div className="d-flex align-items-center justify-content-center rounded-3 p-3 border border-cyan-700 border-2 h-100 cursor-pointer">
+                                <i className="far fa-plus me-3 text-cyan-600"></i>
+                                <span className="text-cyan-600">
+                                  Faça login para escrever sua avaliação
+                                </span>
+                              </div>
+                            </Link>
+                          </div>
+                        )}
                       </div>
                     ) : (
                       <>
