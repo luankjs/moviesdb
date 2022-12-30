@@ -9,6 +9,25 @@ interface MovieProps {
   imdbID: string
   Type: string
   Poster: string
+  Plot: string
+  Rated: string
+  Released: string
+  Runtime: string
+  Genre: string
+  Director: string
+  Writer: string
+  Actors: string
+  Language: string
+  Country: string
+  Awards: string
+  Rating: Array<{ Source: string; Value: string }>
+  Metascore: string
+  imdbRating: string
+  imdbVotes: string
+  DVD: string
+  BoxOffice: string
+  Production: string
+  Website: string
 }
 
 const Movie: React.FC<PropsWithChildren<MovieProps>> = ({
