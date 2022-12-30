@@ -8,20 +8,24 @@ import { useRouter } from 'next/router'
 import ReactLoading from 'react-loading'
 import Swal from 'sweetalert2'
 
+import { useAuthContext } from '../../contexts/AuthContext'
 import Layout from '../../domain/Layout'
 import { MovieProps } from '../../domain/Movie/Card'
 import MovieInfo from '../../domain/Movie/Info'
 import MovieMember from '../../domain/Movie/Member'
-import MovieReview, { MovieReviewProps } from '../../domain/Movie/Review'
+import MovieReview, { MovieReviewProps } from '../../domain/Movie/Review/Card'
+import MovieReviewModal from '../../domain/Movie/Review/Modal'
 import { omdbApi, tstapi } from '../../service/api'
 import { sweetAlertDefaultParams } from '../../utils/sweetAlert2'
 
 const MoviePage = () => {
   const router = useRouter()
   const { imdbid } = router.query
+  const { currentUser } = useAuthContext()
 
   const [isLoading, setIsLoading] = useState(false)
   const [isLoadingReviews, setIsLoadingReviews] = useState(false)
+  const [showReviewModal, setShowReviewModal] = useState(false)
   const [movie, setMovie] = useState<MovieProps | null>(null)
   const [movieReviews, setMovieReviews] =
     useState<Array<MovieReviewProps> | null>(null)
@@ -230,12 +234,18 @@ const MoviePage = () => {
                         <span className="fs-5 text-gray-400">
                           Esse filme não tem avalições ainda.
                         </span>
-                        <button
-                          className="btn btn-link"
-                          onClick={() => console.log('openModal')}
-                        >
-                          Escreve a primeira avalição
-                        </button>
+                        {currentUser ? (
+                          <button
+                            className="btn btn-link"
+                            onClick={() => setShowReviewModal(true)}
+                          >
+                            Escreve a primeira avalição
+                          </button>
+                        ) : (
+                          <Link href="/entrar" className="btn btn-link">
+                            Faça login para escrever sua avaliação
+                          </Link>
+                        )}
                       </>
                     )}
                   </div>
@@ -244,6 +254,13 @@ const MoviePage = () => {
             </div>
           </div>
         </>
+      )}
+      {movie && (
+        <MovieReviewModal
+          show={showReviewModal}
+          movieImdbId={movie?.imdbID}
+          onHide={() => setShowReviewModal(false)}
+        />
       )}
     </Layout>
   )

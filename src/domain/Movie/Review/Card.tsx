@@ -6,7 +6,7 @@ interface MovieReviewProps {
   }
 }
 
-const MovieReview = ({ comment, user }: MovieReviewProps) => {
+const MovieReviewCard = ({ comment, user }: MovieReviewProps) => {
   return (
     <div className="d-flex flex-column bg-white rounded-3 shadow-sm p-3">
       <div className="d-flex flex-column mb-2">
@@ -19,4 +19,4 @@ const MovieReview = ({ comment, user }: MovieReviewProps) => {
 }
 
 export type { MovieReviewProps }
-export default MovieReview
+export default MovieReviewCard

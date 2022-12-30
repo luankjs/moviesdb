@@ -30,7 +30,7 @@ interface MovieProps {
   Website: string
 }
 
-const Movie: React.FC<PropsWithChildren<MovieProps>> = ({
+const MovieCard: React.FC<PropsWithChildren<MovieProps>> = ({
   Title,
   Poster,
   Year,
@@ -66,4 +66,4 @@ const Movie: React.FC<PropsWithChildren<MovieProps>> = ({
 }
 
 export type { MovieProps }
-export default Movie
+export default MovieCard
