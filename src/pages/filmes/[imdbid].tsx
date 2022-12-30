@@ -120,8 +120,8 @@ const MoviePage = () => {
       ) : (
         <>
           <div className="container">
-            <div className="row justify-content-center align-items-center my-5">
-              <div className="col-11 col-md-5 col-lg-4 col-xl-4 mb-5 mb-md-0 px-5 px-md-0">
+            <div className="row justify-content-center my-5">
+              <div className="col-11 col-md-4 mb-5 mb-md-0 px-5 px-md-0">
                 <div className="ratio ratio-2x3 position-relative rounded-3 overflow-hidden shadow-lg">
                   <Image
                     src={
@@ -135,8 +135,8 @@ const MoviePage = () => {
                   />
                 </div>
               </div>
-              <div className="col-11 col-md-7 col-lg-8 col-xl-7">
-                <div className="px-md-2 px-xl-4">
+              <div className="col-11 col-md-8 col-xl-7">
+                <div className="px-md-2 px-xl-4 pt-3">
                   <h1 className="fw-semibold">{movie?.Title}</h1>
                   <p className="text-gray-600">{movie?.Plot}</p>
                   <div className="my-4">
@@ -187,7 +187,8 @@ const MoviePage = () => {
                       className="flex-fill mb-3 mb-sm-0"
                     />
                   </div>
-                  <div className="mt-4">
+                  <hr className="my-4 my-md-5" />
+                  <div className="my-4">
                     <h2 className="fs-6 text-secondary mb-2">Equipe Técnica</h2>
                     <div className="d-flex flex-column flex-sm-row flex-wrap align-items-sm-center w-100">
                       {movie?.Director &&
@@ -214,7 +215,7 @@ const MoviePage = () => {
                         ))}
                     </div>
                   </div>
-                  <div className="mt-2">
+                  <div className="my-4">
                     <h2 className="fs-6 text-secondary mb-2">
                       Elenco Principal
                     </h2>
@@ -231,22 +232,10 @@ const MoviePage = () => {
                         ))}
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="my-5">
-            <div className="container">
-              <div className="row justify-content-center">
-                <div className="col-11">
-                  <h2 className="fs-3 mb-3">Avalições</h2>
-                </div>
-              </div>
-            </div>
-            <div className="bg-cyan-800 pt-5 pb-4 p-md-5">
-              <div className="container">
-                <div className="row justify-content-center">
-                  <div className="col-11">
+                  <div className="my-4">
+                    <h2 className="fs-6 text-secondary mb-3">
+                      Avaliações dos usuários
+                    </h2>
                     {isLoadingReviews && !movieReviews ? (
                       <div className="w-100 d-flex align-items-center justify-content-center">
                         <ReactLoading
@@ -260,12 +249,9 @@ const MoviePage = () => {
                         </span>
                       </div>
                     ) : movieReviews && movieReviews.length > 0 ? (
-                      <div className="row">
+                      <div className="">
                         {movieReviews?.map((movieReview, i) => (
-                          <div
-                            key={i}
-                            className="col-sm-6 col-md-4 col-lg-3 mb-3"
-                          >
+                          <div key={i} className="mb-3">
                             <MovieReview
                               {...movieReview}
                               handleRefetchReviews={getMovieReviews}
@@ -277,7 +263,7 @@ const MoviePage = () => {
                             user: { name: currentUser.name },
                             imdbID: imdbid,
                           }) && (
-                            <div className="col-sm-6 col-md-4 col-lg-3 mb-3">
+                            <div className="mb-3">
                               <div
                                 className="d-flex align-items-center justify-content-center rounded-3 p-3 border border-cyan-700 border-2 h-100 cursor-pointer"
                                 onClick={() => setShowReviewModal(true)}
