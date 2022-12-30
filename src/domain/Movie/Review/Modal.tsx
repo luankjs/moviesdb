@@ -100,7 +100,6 @@ const MovieReviewModal = ({ show, movieImdbId, onHide }: ReviewModalProps) => {
                     <Rating
                       emptySymbol="fa fa-star-o fs-4 text-warning"
                       fullSymbol="fa fa-star fs-4 text-warning"
-                      fractions={2}
                       onChange={onChange}
                       initialRating={value}
                     />
