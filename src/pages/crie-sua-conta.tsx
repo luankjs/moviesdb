@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import Reaptcha from 'reaptcha'
 import Swal from 'sweetalert2'
 
 import { tstapi } from '../service/api'
@@ -13,6 +14,7 @@ type SignUpFormData = {
   name: string
   email: string
   password: string
+  recaptcha: boolean
 }
 
 const SignUpPage = () => {
@@ -23,6 +25,7 @@ const SignUpPage = () => {
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<SignUpFormData>()
 
   const onSubmit = (data: SignUpFormData) => {
@@ -129,6 +132,24 @@ const SignUpPage = () => {
                 {errors.password && (
                   <div className="invalid-feedback d-block">
                     {errors.password?.message}
+                  </div>
+                )}
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="hidden"
+                  {...register('recaptcha', {
+                    required: 'Confirme que você não é um rôbo',
+                  })}
+                />
+                <Reaptcha
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  onVerify={() => setValue('recaptcha', true)}
+                />
+                {errors.recaptcha && (
+                  <div className="invalid-feedback d-block">
+                    {errors.recaptcha?.message}
                   </div>
                 )}
               </div>

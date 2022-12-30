@@ -4,6 +4,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import Reaptcha from 'reaptcha'
 import Swal from 'sweetalert2'
 
 import { useAuthContext } from '../contexts/AuthContext'
@@ -13,6 +14,7 @@ import { sweetAlertDefaultParams } from '../utils/sweetAlert2'
 type LoginFormData = {
   email: string
   password: string
+  recaptcha: boolean
 }
 
 const LoginPage = () => {
@@ -22,6 +24,7 @@ const LoginPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<LoginFormData>()
   const { setLoginData } = useAuthContext()
 
@@ -94,6 +97,24 @@ const LoginPage = () => {
                 {errors.password && (
                   <div className="invalid-feedback d-block">
                     {errors.password?.message}
+                  </div>
+                )}
+              </div>
+
+              <div className="mb-3">
+                <input
+                  type="hidden"
+                  {...register('recaptcha', {
+                    required: 'Confirme que você não é um rôbo',
+                  })}
+                />
+                <Reaptcha
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  onVerify={() => setValue('recaptcha', true)}
+                />
+                {errors.recaptcha && (
+                  <div className="invalid-feedback d-block">
+                    {errors.recaptcha?.message}
                   </div>
                 )}
               </div>
