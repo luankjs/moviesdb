@@ -1,34 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MoviesDB
 
-## Getting Started
+Plataforma web desenvolvida usando [Next.js](https://nextjs.org/) para consumir a [OMDb API](https://www.omdbapi.com/)
 
-First, run the development server:
+DEMO 👉 https://moviesdb-two.vercel.app/
 
-```bash
-npm run dev
-# or
-yarn dev
+## Pré-Requisitos
+
+Você vai precisar do [Node.js](https://nodejs.org) e [NPM](https://www.npmjs.com/) instalados em sua máquina
+
+## Setup
+
+Clone o repositório no Github
+
+```
+git clone https://github.com/luankjs/moviesdb
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Vá até a pasta onde clonou o repositório e instale as dependências
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```
+npm install
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+Agora você precisa definir as variáveis de ambiente, faça uma cópia do conteúdo do arquivo `.env.example` e salve como `.env.local` substituindo o valor das variáveis
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+```
+NEXT_PUBLIC_OMBD_API_KEY='get it on https://www.omdbapi.com/apikey.aspx'
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY='get it on google recaptcha admin console'
+```
 
-## Learn More
+Então, ligue o servidor
 
-To learn more about Next.js, take a look at the following resources:
+```
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+A plataforma deve estar rodando em http://localhost:3000 🚀
