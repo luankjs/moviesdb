@@ -66,15 +66,14 @@ const MovieReviewCard = ({
           {isOwnReview ? 'Sua avaliação' : 'Usuário do MoviesDB'}
         </span>
       </div>
-      <div className="mb-1 text-gray-600 fs-7">
-        <LinesEllipsis
-          text={comment}
-          maxLine={3}
-          ellipsis="..."
-          trimRight
-          basedOn="letters"
-        />
-      </div>
+      <LinesEllipsis
+        text={comment}
+        maxLine={3}
+        ellipsis="..."
+        trimRight
+        basedOn="letters"
+        className="mb-1 text-gray-600 fs-7 text-break"
+      />
       <div>
         {isOwnReview && (
           <button
