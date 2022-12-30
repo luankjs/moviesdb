@@ -14,8 +14,14 @@ const Navbar: React.FC<PropsWithChildren<Props>> = () => {
     <nav className="navbar bg-dark py-4 shadow-lg">
       <div className="container-fluid container-md d-flex justify-content-between">
         <div className="" style={{ flex: 1 }}>
-          <Link href="/" passHref>
-            <i className="fas fa-home text-secondary fs-5"></i>
+          <Link
+            href="/"
+            passHref
+            aria-label="Home"
+            className="bg-secondary-hover bg-opacity-10-hover p-2 rounded"
+          >
+            <i className="fas fa-home text-secondary fs-5 me-2"></i>
+            <span className="text-secondary">Inicial</span>
           </Link>
         </div>
         <Link className="navbar-brand py-0 text-center me-0" href="/">

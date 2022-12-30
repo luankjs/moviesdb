@@ -20,10 +20,18 @@ $utilities: map-merge(
             ),
         )
       ),
+    'background-color':
+      map-merge(
+        map-get($utilities, 'background-color'),
+        (
+          state: hover,
+        )
+      ),
     'bg-opacity':
       map-merge(
         map-get($utilities, 'bg-opacity'),
         (
+          state: hover,
           values:
             map-merge(
               map-get(map-get($utilities, 'bg-opacity'), 'values'),
