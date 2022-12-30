@@ -96,6 +96,7 @@ const MovieReviewModal = ({ show, movieImdbId, onHide }: ReviewModalProps) => {
                     <span className="fs-7 text-gray-600 me-2">
                       Dê sua nota:
                     </span>
+                    {/* @ts-expect-error Server Component */}
                     <Rating
                       emptySymbol="fa fa-star-o fs-4 text-warning"
                       fullSymbol="fa fa-star fs-4 text-warning"
